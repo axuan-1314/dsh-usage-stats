@@ -1,0 +1,20 @@
+# 依赖与产物
+node_modules/
+*.tgz
+
+# 日志与本地状态
+*.log
+*.log.*
+
+# 本地/密钥
+.env
+.env.*
+*.local
+*.local.yml
+cordis.local.patch.yml
+
+# 编辑器/系统
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

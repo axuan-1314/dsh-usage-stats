@@ -1,0 +1,60 @@
+{
+  "name": "dsh-usage-stats",
+  "version": "0.2.0",
+  "description": "DSH 官方桌面版「使用统计」插件——设置页新增使用统计分区，照 ZCode 开源版界面：五格终身摘要条 + GitHub 式 Token 热力图（每日/每周/累计三档）+ 今日/近 7 日/近 30 日趋势折线 + 模型用量环形图。数据来自 host 侧 session 事件采集（照抄官方 tokenUsage 投影折叠语义），全本地 JSONL 落盘 ~/.dsh/usage-stats/，零上传零新依赖，支持历史会话回填（node:zlib 解 zstd）。纯只读 GET API 四条走内核 webServer 同源反代。",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib/index.js",
+    "lib/fold.js",
+    "lib/store.js",
+    "lib/aggregate.js",
+    "lib/client.js",
+    "cordis.patch.yml"
+  ],
+  "scripts": {
+    "test": "node --test \"test/**/*.test.mjs\"",
+    "check": "node --check lib/client.js && node --check lib/index.js && node --check lib/fold.js && node --check lib/store.js && node --check lib/aggregate.js"
+  },
+  "keywords": [
+    "deepseek-harness",
+    "dsh",
+    "dsh-plugin",
+    "usage-stats"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/axuan-1314/dsh-usage-stats.git"
+  },
+  "homepage": "https://github.com/axuan-1314/dsh-usage-stats#readme",
+  "bugs": {
+    "url": "https://github.com/axuan-1314/dsh-usage-stats/issues"
+  },
+  "author": "axuan-1314",
+  "engines": {
+    "node": ">=22.15.0"
+  },
+  "dependencies": {},
+  "dsh": {
+    "bundle": {
+      "patch": "cordis.patch.yml"
+    },
+    "client": {
+      "inject": [
+        "@deepseek-ai/dsh-api-remotes",
+        "@deepseek-ai/dsh-api-session-controller",
+        "@deepseek-ai/dsh-client-ui-commands",
+        "@deepseek-ai/dsh-client-ui-model-selection",
+        "@deepseek-ai/dsh-client-ui-renderer",
+        "@deepseek-ai/dsh-client-ui-slots"
+      ],
+      "platform": "web"
+    }
+  }
+}
