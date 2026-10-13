@@ -1,16 +1,21 @@
 # dsh-usage-stats
 
+[![CI](https://github.com/axuan-1314/dsh-usage-stats/actions/workflows/ci.yml/badge.svg)](https://github.com/axuan-1314/dsh-usage-stats/actions/workflows/ci.yml)
+[![version](https://img.shields.io/github/v/tag/axuan-1314/dsh-usage-stats?label=version)](https://github.com/axuan-1314/dsh-usage-stats/tags)
+[![license](https://img.shields.io/github/license/axuan-1314/dsh-usage-stats?label=license)](https://github.com/axuan-1314/dsh-usage-stats/blob/master/LICENSE)
+
 > **[English](README.en.md) | 中文**
 
 > DSH 官方桌面版的「使用统计」插件：在设置页新增「使用统计」分区，照 ZCode 开源版界面呈现 Token 用量——五格终身摘要条、GitHub 式热力图、趋势折线、模型用量环形图。数据全部来自本机（实时事件采集 + 历史会话回填），零上传、零新依赖。
 
-- **插件版本**：0.2.0（以 `package.json` 为准；变更记录见 `CHANGELOG.md`）
+- **插件版本**：0.2.0（以 `package.json` 为准；变更记录见 [CHANGELOG.md](CHANGELOG.md)）
 - **适配宿主**：DSH 0.2.0-rc.2（web / headless / desktop 三个 profile 均可安装；面板 UI 在 web / desktop 呈现）；事件与文件形状按该版本源码级实证
 - **分发**：GitHub 仓库 tag tarball 渠道（+ 本地 clone 作开发）；升级方式见[「升级」](#升级)（DSH 插件不支持自动更新）
 - **数据位置**：全部在本地 `~/.dsh/usage-stats/`（默认，可经 `storageRoot` 配置），不上传任何远端
 - **网络**：仅本机 loopback（API 走内核 webServer 同源反代），无遥测零上传
 - **前置条件**：已安装 DSH（web / headless / desktop 任一 profile）；宿主 Node ≥ 22.15（参考环境 24.x；历史回填用到 `node:zlib` 的 zstd 解压）；**零运行时依赖**（无需 `npm install`）
 - **许可**：MIT License（见 [LICENSE](LICENSE)）
+- **路线图**：已交付版本与下一版方向见 [ROADMAP.md](ROADMAP.md)
 
 ## 目录
 
@@ -32,6 +37,7 @@
 - [FAQ](#faq)
 - [开发测试](#开发测试)
 - [已知限制](#已知限制)
+- [相关项目](#相关项目)
 
 ## 功能介绍
 
@@ -182,7 +188,7 @@ npm run check
 - API：`GET /api/dsh-usage-stats/summary`、`/heatmap?days=`（默认 366，0=全量）、`/trend?days=1|7|30`、`/models?days=7|30`、`/backfill/status`，以及 `POST /backfill`（202 受理制）。
 - 调试日志：`DSH_USAGE_STATS_DEBUG=1` 时输出到 stderr。
 
-实现细节见 `SPEC.md`。
+实现细节见 [SPEC.md](SPEC.md)。
 
 ## 已知限制
 
@@ -196,3 +202,7 @@ npm run check
 - 热力图固定回看 52 自然周，更早的用量只计入摘要条等全期口径，不出现在格子里；
 - 热力图「每周/累计」档的悬停卡片取该周**末位日期**（周六）与周合计，是既有口径（照 ZCode）；
 - 趋势悬停卡片最多列 8 个模型行（超出注「另有 N 个模型未列出」）——单日模型数很多时卡片不再无限长。
+
+## 相关项目
+
+- **[dsh-keepsake](https://github.com/axuan-1314/dsh-keepsake)** —— 同为 DSH（DeepSeek Harness）生态的本地优先插件：跨会话记忆留档，本地 markdown 落盘、自动提取 + 注入、零依赖 + 管理面板。一个记「用了多少」，一个记「聊了什么、定过什么」；两者互不依赖，可各自单独安装。

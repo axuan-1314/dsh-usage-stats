@@ -17,6 +17,9 @@ function test31(name, fn) {
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
+/** mock logger：纯空实现（历史上的环境变量调试门控已移除，测试不再有任何日志旁路）。 */
+const mockLogger = { info() {}, warn() {}, error() {} };
+
 /** mock 宿主上下文：记录订阅/路由/生命周期，够 index.js apply 跑通采集→回填→清理全链。 */
 function makeMockCtx() {
   const handlers = {};
@@ -40,7 +43,7 @@ function makeMockCtx() {
       if (typeof dispose === "function") disposers.push(dispose);
       return dispose;
     },
-    logger: { info(m) { if (process.env.DUS_IT_LOG) console.log("[mock]", m); }, warn(m) { if (process.env.DUS_IT_LOG) console.log("[mock][warn]", m); }, error(m) { if (process.env.DUS_IT_LOG) console.log("[mock][err]", m); } },
+    logger: mockLogger,
   };
 }
 
@@ -109,7 +112,7 @@ function makeRouteCaptureCtx() {
       });
     },
     effect: (setup) => { const d = setup(); if (typeof d === "function") disposers.push(d); },
-    logger: { info(m) { if (process.env.DUS_IT_LOG) console.log("[mock]", m); }, warn(m) { if (process.env.DUS_IT_LOG) console.log("[mock][warn]", m); }, error(m) { if (process.env.DUS_IT_LOG) console.log("[mock][err]", m); } },
+    logger: mockLogger,
   };
 }
 

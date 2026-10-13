@@ -1,18 +1,23 @@
 # dsh-usage-stats
 
+[![CI](https://github.com/axuan-1314/dsh-usage-stats/actions/workflows/ci.yml/badge.svg)](https://github.com/axuan-1314/dsh-usage-stats/actions/workflows/ci.yml)
+[![version](https://img.shields.io/github/v/tag/axuan-1314/dsh-usage-stats?label=version)](https://github.com/axuan-1314/dsh-usage-stats/tags)
+[![license](https://img.shields.io/github/license/axuan-1314/dsh-usage-stats?label=license)](https://github.com/axuan-1314/dsh-usage-stats/blob/master/LICENSE)
+
 > **English | [中文](README.md)**
 
 > A "usage statistics" plugin for the official DSH desktop build: it adds a **Usage statistics** section to the settings page and presents token usage the way the open-source ZCode build does — a five-cell lifetime summary bar, a GitHub-style heatmap, a trend line, and a model-usage donut chart. All data comes from the local machine (live event collection + historical session backfill), with zero uploads and zero new dependencies.
 
 > Note: the plugin's in-app UI strings are Chinese; the English wording below is provided for clarity.
 
-- **Plugin version**: 0.2.0 (see `package.json` for the source of truth; see `CHANGELOG.md` for the change history)
+- **Plugin version**: 0.2.0 (see `package.json` for the source of truth; see [CHANGELOG.md](CHANGELOG.md) for the change history)
 - **Host compatibility**: DSH 0.2.0-rc.2 (installable on all three profiles web / headless / desktop; the panel UI is rendered on web / desktop); event and file shapes are verified at the source level against that version
 - **Distribution**: the GitHub repo tag tarball channel (plus a local clone for development); upgrading is covered in [Upgrade](#upgrade) (DSH plugins do not auto-update)
 - **Data location**: everything stays local under `~/.dsh/usage-stats/` (the default, configurable via `storageRoot`); nothing is uploaded to any remote
 - **Network**: local loopback only (the API goes through the kernel webServer's same-origin reverse proxy); no telemetry, zero uploads
 - **Prerequisites**: DSH installed (any of the web / headless / desktop profiles); the host runs Node ≥ 22.15 (24.x on the reference environment; historical backfill uses `node:zlib` for zstd decompression); **zero runtime dependencies** (no `npm install`)
 - **License**: MIT (see [LICENSE](LICENSE))
+- **Roadmap**: shipped versions and what comes next are in [ROADMAP.md](ROADMAP.md)
 
 ## Contents
 
@@ -34,6 +39,7 @@
 - [FAQ](#faq)
 - [Development & testing](#development--testing)
 - [Known limitations](#known-limitations)
+- [Related projects](#related-projects)
 
 ## Features
 
@@ -184,7 +190,7 @@ npm run check
 - API: `GET /api/dsh-usage-stats/summary`, `/heatmap?days=` (default 366, 0 = everything), `/trend?days=1|7|30`, `/models?days=7|30`, `/backfill/status`, plus `POST /backfill` (202 accept-style).
 - Debug log: written to stderr when `DSH_USAGE_STATS_DEBUG=1`.
 
-Implementation details are in `SPEC.md`.
+Implementation details are in [SPEC.md](SPEC.md).
 
 ## Known limitations
 
@@ -198,3 +204,7 @@ The known limitations are listed below:
 - The heatmap always looks back 52 calendar weeks; usage older than that only counts toward full-period metrics such as the summary bar and does not appear in the cells;
 - The heatmap's "weekly / cumulative" mode hover card takes the week's **last date** (Saturday) and the week total — a pre-existing definition (following ZCode);
 - The trend hover card lists at most 8 model rows (beyond that it notes "and N more models not listed") — with a very large number of models in a single day the card no longer grows without bound.
+
+## Related projects
+
+- **[dsh-keepsake](https://github.com/axuan-1314/dsh-keepsake)** — another local-first plugin in the DSH (DeepSeek Harness) ecosystem: cross-session memory archived as local markdown, with automatic extraction + injection, zero dependencies and a management panel. One records *how much you used*; the other records *what you talked about and decided*; neither depends on the other and each installs on its own.

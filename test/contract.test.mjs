@@ -1,5 +1,6 @@
 // 接口测试：锚定宿主事件形状与内核会话文件格式。DSH 升级若改动任一形状，这里先红。
-// 样例取自 DSH 会话文件（0.2.0-rc.2，已脱敏：content/stream 体裁去，结构逐字段保留）。
+// 样例取自 DSH 会话文件（0.2.0-rc.2，已脱敏：content/stream 体裁去，结构逐字段保留；
+// 顶层 time 亦为合成值——夹具不依赖具体时间，仅固定事件形状）。
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { zstdCompressSync } from "node:zlib";
@@ -19,7 +20,7 @@ function test31(name, fn) {
 const REAL_MESSAGE_EVENT = {
   type: "assistant/message",
   seq: 17,
-  time: 1790813714946,
+  time: 1700000000000, // 合成时间戳（2023-11-14T22:13:20Z）：非真实会话时间
   data: {
     turn: 1,
     step: 1,
@@ -44,7 +45,7 @@ const REAL_MESSAGE_EVENT = {
 const REAL_ATTEMPT_EVENT = {
   type: "assistant/attempt",
   seq: 21,
-  time: 1790813720000,
+  time: 1700000005000, // 合成时间戳：比上一条晚 5 秒，仅为保持事件时序可读
   data: {
     turn: 1,
     step: 2,

@@ -12,6 +12,25 @@ node_modules/
 *.local
 *.local.yml
 cordis.local.patch.yml
+secrets.json
+*.pem
+*.key
+
+# 本仓库工作流可能产出的本地数据/中间物：一律不进版本库
+# （插件真实数据在 ~/.dsh/usage-stats/，本仓库内不该出现；此处为防误推）
+data/
+memory/
+backups/
+*.jsonl
+settings.json
+design.html
+usage-stats/
+
+# 截图与图片
+# 当前仓库不含任何图片资产（README 也尚无截图），故 *.png 默认全部忽略以防误推；
+# 将来要提交公开截图，放进 docs/screenshots/ 即可被下面的白名单放行。
+*.png
+!docs/screenshots/*.png
 
 # 编辑器/系统
 .DS_Store
